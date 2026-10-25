@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zehnfinger-Training Deutsch A1 bis B2</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 16px; color: #222; }
+  h1 { font-size: 1.5rem; }
+  .card { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+  select, button { font-size: 1rem; padding: 8px 14px; margin-right: 8px; }
+  #target { font-size: 1.4rem; line-height: 1.8; font-family: monospace; word-break: break-word; }
+  .ok { color: #1a7f37; }
+  .bad { color: #cf222e; background: #ffebe9; }
+  .cur { text-decoration: underline; }
+  #input { width: 100%; font-size: 1.2rem; font-family: monospace; padding: 10px; box-sizing: border-box; }
+  #hint { margin-top: 12px; font-size: 1rem; color: #555; }
+  #stats { font-size: 1.1rem; margin-top: 12px; }
+  #keyboard { margin-top: 16px; }
+  .kbrow { display: flex; justify-content: center; gap: 4px; margin: 4px 0; }
+  .key { width: 30px; height: 30px; border: 1px solid #bbb; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.85rem; background: #fff; }
+  .key.left { background: #dbeafe; }
+  .key.right { background: #dcfce7; }
+  .key.home { box-shadow: inset 0 -3px 0 #555; }
+  .key.space { width: 220px; }
+  .key.shift { width: 80px; font-size: 0.75rem; }
+  /* Abstufungen pro Finger: hell = kleiner Finger, dunkel = Zeigefinger */
+  .key.lp { background: #dbeafe; }
+  .key.lr { background: #bfdbfe; }
+  .key.lm { background: #93c5fd; }
+  .key.li { background: #60a5fa; }
+  .key.rp { background: #dcfce7; }
+  .key.rr { background: #bbf7d0; }
+  .key.rm { background: #86efac; }
+  .key.rI { background: #4ade80; }
+  .key.next { background: #f59e0b; color: #fff; font-weight: bold; border-color: #b45309; }
+  .kbnote { font-size: 0.85rem; color: #555; margin-top: 6px; }
+</style>
+</head>
+<body>
+<h1>Zehnfinger-Training Deutsch</h1>
+
+<div class="card">
+  <label>Niveau:
+    <select id="level">
+      <option value="A1">A1</option>
+      <option value="A2">A2</option>
+      <option value="B1">B1</option>
+      <option value="B2">B2</option>
+    </select>
+  </label>
+  <label>Übung:
+    <select id="mode">
+      <option value="woerter">Wörter</option>
+      <option value="saetze">Sätze</option>
+    </select>
+  </label>
+  <label>Umschalt-Taste:
+    <select id="shiftpref">
+      <option value="gegenseite">Gegenseite (Standard)</option>
+      <option value="links">Immer links</option>
+    </select>
+  </label>
+  <button id="start">Start</button>
+  <button id="next">Neuer Text</button>
+</div>
+
+<div class="card">
+  <h2 style="font-size:1.1rem;margin-top:0">Fingerstellung (Zehnfingersystem, deutsches QWERTZ)</h2>
+  <p><strong>Grundstellung:</strong> Die Zeigefinger liegen auf F und J. Die Finger der Reihe ASDF (links) und JKLÖ (rechts) liegen auf den Grundreihentasten. Daumen liegen auf der Leertaste. Nach jeder Taste kehren die Finger in diese Grundstellung zurück.</p>
+  <table style="border-collapse:collapse;font-size:0.95rem;margin:10px 0">
+    <tr><td style="padding:4px 12px 4px 0"><strong>Linke Hand</strong></td><td>Kleiner Finger: Q, A, Y, Strg</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"></td><td>Ringfinger: W, S, X</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"></td><td>Mittelfinger: E, D, C</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"></td><td>Zeigefinger: R, F, V, T, G, B</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"><strong>Rechte Hand</strong></td><td>Zeigefinger: Z, U, H, J, N, M</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"></td><td>Mittelfinger: I, K, Komma</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"></td><td>Ringfinger: O, L, Punkt</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"></td><td>Kleiner Finger: P, Ö, Ä, Ü, ß</td></tr>
+    <tr><td style="padding:4px 12px 4px 0"><strong>Daumen</strong></td><td>Leertaste (je nach Hand, meist rechter Daumen)</td></tr>
+  </table>
+  <p><strong>Tipps:</strong></p>
+  <ul>
+    <li>Blick auf den Bildschirm, nicht auf die Tastatur. Die Finger lernen die Positionen mit der Zeit selbst.</li>
+    <li>Lieber langsam und fehlerfrei tippen. Die Geschwindigkeit kommt mit der Wiederholung.</li>
+    <li>Jeden Finger nur für seine Tasten benutzen, auch wenn es anfangs ungewohnt ist.</li>
+    <li>Die Hinweise unter dem Eingabefeld zeigen für jede nächste Taste den zuständigen Finger.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div id="target">Wähle ein Niveau und klicke auf Start.</div>
+  <input id="input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" disabled>
+  <div id="hint"></div>
+  <div id="stats"></div>
+  <div id="keyboard"></div>
+  <div class="kbnote">Blautöne: linke Hand, Grüntöne: rechte Hand, je Finger eine eigene Abstufung (hell: kleiner Finger, dunkel: Zeigefinger), dunkle Unterstreichung: F und J (Grundstellung). Orange: nächste Taste. Bei Großbuchstaben leuchtet zusätzlich die Umschalt-Taste der Gegenseite.</div>
+</div>
+
+<script>
+// Wortlisten pro Niveau. Annäherung, keine offizielle Goethe- oder Telc-Liste.
+// Eigene Wörter einfach ergänzen.
+const WORDS = {
+  A1: [
+    "Hallo", "Danke", "Bitte", "Ja", "Nein", "Tag", "Morgen", "Abend", "Nacht", "Heute", "Morgen", "Jetzt",
+    "Haus", "Wohnung", "Zimmer", "Küche", "Bad", "Tür", "Fenster", "Tisch", "Stuhl", "Bett", "Lampe",
+    "Mann", "Frau", "Kind", "Kinder", "Mutter", "Vater", "Bruder", "Schwester", "Freund", "Familie", "Name",
+    "Katze", "Hund", "Vogel", "Fisch", "Pferd", "Kuh", "Maus",
+    "Wasser", "Brot", "Milch", "Kaffee", "Tee", "Apfel", "Käse", "Fleisch", "Reis", "Ei", "Salz", "Zucker",
+    "Buch", "Stift", "Heft", "Tasche", "Schlüssel", "Handy", "Computer", "Auto", "Bus", "Zug", "Fahrrad",
+    "Schule", "Lehrer", "Arbeit", "Geld", "Euro", "Preis", "Laden", "Markt", "Straße", "Stadt", "Dorf",
+    "Rot", "Blau", "Grün", "Gelb", "Schwarz", "Weiß", "Groß", "Klein", "Gut", "Schlecht", "Heiß", "Kalt",
+    "Essen", "Trinken", "Lesen", "Schreiben", "Spielen", "Schlafen", "Arbeiten", "Kommen", "Gehen", "Sehen",
+    "Wetter", "Sonne", "Regen", "Schnee", "Wind", "Baum", "Blume", "Garten", "Park"
+  ],
+  A2: [
+    "Wohnung", "Mietvertrag", "Nachbar", "Einkaufen", "Supermarkt", "Bäckerei", "Apotheke", "Bahnhof",
+    "Fahrkarte", "Haltestelle", "Ausflug", "Urlaub", "Reise", "Hotel", "Flughafen", "Koffer", "Pass",
+    "Geburtstag", "Einladung", "Geschenk", "Feier", "Hochzeit", "Termin", "Kalender", "Woche", "Monat",
+    "Kollege", "Chef", "Büro", "Firma", "Gehalt", "Pause", "Mittagessen", "Frühstück", "Abendessen",
+    "Sprache", "Deutschkurs", "Übung", "Prüfung", "Wörterbuch", "Hausaufgabe", "Thema", "Frage", "Antwort",
+    "Gesundheit", "Arzt", "Krankenhaus", "Medikament", "Schmerz", "Erkältung", "Fieber", "Termin",
+    "Wetter", "Temperatur", "Gewitter", "Nebel", "Schirm", "Jacke", "Mantel", "Pullover", "Schuhe",
+    "Freizeit", "Sport", "Schwimmbad", "Kino", "Theater", "Konzert", "Museum", "Bibliothek",
+    "Verkehr", "Parkplatz", "Tankstelle", "Ampel", "Kreuzung", "Brücke", "Ausländer", "Ausweis",
+    "Eigentlich", "Trotzdem", "Vielleicht", "Hoffentlich", "Zuerst", "Danach", "Außerdem", "Deshalb"
+  ],
+  B1: [
+    "Verantwortung", "Entscheidung", "Gelegenheit", "Erfahrung", "Bewerbung", "Vorschlag", "Zusammenhang",
+    "Unterschied", "Gewohnheit", "Gesellschaft", "Beziehung", "Meinung", "Vorteil", "Nachteil", "Ergebnis",
+    "Ursache", "Wirkung", "Entwicklung", "Veränderung", "Anforderung", "Fähigkeit", "Kenntnis", "Bereich",
+    "Erfolg", "Misserfolg", "Versuch", "Verbindung", "Gemeinschaft", "Umwelt", "Verkehrsmittel", "Lebensstil",
+    "Vermieter", "Mieterhöhung", "Nebenkosten", "Kündigung", "Versicherung", "Rechnung", "Überweisung",
+    "Bewerbungsgespräch", "Lebenslauf", "Zeugnis", "Weiterbildung", "Abteilung", "Projekt", "Aufgabe",
+    "Verständnis", "Vertrauen", "Hoffnung", "Angst", "Freude", "Ärger", "Enttäuschung", "Sorge",
+    "Vielleicht", "Trotzdem", "Dennoch", "Außerdem", "Allerdings", "Insgesamt", "Schließlich", "Ansonsten"
+  ],
+  B2: [
+    "Auseinandersetzung", "Voraussetzung", "Schlussfolgerung", "Zuverlässigkeit", "Hintergrund",
+    "Selbstständigkeit", "Einschätzung", "Rahmenbedingung", "Gesichtspunkt", "Stellungnahme", "Befürchtung",
+    "Eigenverantwortung", "Ausgangssituation", "Lösungsansatz", "Auswirkung", "Bemühung", "Gegenargument",
+    "Anerkennung", "Benachteiligung", "Förderung", "Gleichberechtigung", "Datenschutz", "Nachhaltigkeit",
+    "Wirtschaftlichkeit", "Zielsetzung", "Bewusstsein", "Verhältnismäßigkeit", "Glaubwürdigkeit",
+    "Einflussnahme", "Vorgehensweise", "Befugnis", "Zurückhaltung", "Durchsetzungsvermögen",
+    "Gesetzgebung", "Vorschrift", "Ermessensspielraum", "Rechtsanspruch", "Kompromiss", "Stichhaltig",
+    "Dementsprechend", "Ungeachtet", "Demzufolge", "Nichtsdestotrotz", "Keineswegs", "Gleichwohl", "Zwar"
+  ]
+};
+
+// Beispielsätze pro Niveau (Grammatik und Wortschatz orientiert an A1 bis B2)
+const SENTENCES = {
+  A1: [
+    "Ich heiße Anna und wohne in Berlin.",
+    "Wie spät ist es?",
+    "Das ist mein Bruder.",
+    "Ich trinke gern einen Kaffee am Morgen.",
+    "Der Hund schläft im Garten.",
+    "Wir essen heute Brot mit Käse.",
+    "Kannst du mir bitte helfen?",
+    "Mein Zimmer ist klein, aber hell.",
+    "Sie spielt gern Klavier.",
+    "Wo ist der Bahnhof, bitte?",
+    "Ich habe zwei Katzen und einen Vogel.",
+    "Am Wochenende gehe ich in den Park.",
+    "Das Wetter ist heute sehr schön.",
+    "Er kommt um acht Uhr zur Arbeit.",
+    "Ich lerne jeden Tag Deutsch.",
+    "Die Milch ist im Kühlschrank.",
+    "Wir fahren mit dem Bus in die Stadt.",
+    "Hast du einen Stift für mich?",
+    "Meine Schwester wohnt in München.",
+    "Das Essen schmeckt gut."
+  ],
+  A2: [
+    "Ich suche eine Wohnung, die nicht zu teuer ist.",
+    "Am Samstag fahren wir mit dem Zug nach Hamburg.",
+    "Könnten Sie mir bitte sagen, wo die Apotheke ist?",
+    "Ich habe morgen einen Termin beim Arzt.",
+    "Wenn es regnet, nehme ich lieber den Bus.",
+    "Meine Kollegin hat mich zu ihrer Feier eingeladen.",
+    "Ich muss noch einkaufen, weil der Kühlschrank leer ist.",
+    "Im Sommer machen wir einen Ausflug an den See.",
+    "Er hat keine Zeit, weil er viel arbeiten muss.",
+    "Das Konzert hat mir sehr gut gefallen, obwohl es spät war.",
+    "Ich möchte gern einen Deutschkurs besuchen.",
+    "Bitte füllen Sie das Formular aus und unterschreiben Sie es.",
+    "Im Krankenhaus wartet man oft sehr lange.",
+    "Wir gehen am Abend ins Kino oder ins Theater.",
+    "Ich bin erkältet und bleibe heute zu Hause.",
+    "Nach der Arbeit treffe ich mich mit meinen Freunden.",
+    "Der Zug hatte zehn Minuten Verspätung.",
+    "Ich würde gern mehr Sport treiben, aber ich finde keine Zeit.",
+    "Die Kinder spielen draußen, bis es dunkel wird.",
+    "Hast du schon gehört, dass die Bibliothek bald umzieht?"
+  ],
+  B1: [
+    "Obwohl das Gehalt niedrig ist, arbeitet sie sehr gern in dem Team.",
+    "Wenn man in einer fremden Stadt lebt, muss man sich oft neu orientieren.",
+    "Ich habe mich für die Stelle beworben, weil sie mir interessante Aufgaben bietet.",
+    "Der Vermieter hat die Miete erhöht, ohne vorher das Gespräch zu suchen.",
+    "Viele Menschen wünschen sich eine ausgewogenere Verteilung der Arbeitszeit.",
+    "Man sollte sich vor dem Kauf genau überlegen, ob man das Produkt wirklich braucht.",
+    "Die Ergebnisse der Studie haben die Erwartungen der Forscher übertroffen.",
+    "Trotz der Schwierigkeiten hat das Projekt letztlich einen großen Erfolg gebracht.",
+    "Ich wäre bereit, mehr Verantwortung zu übernehmen, wenn ich die nötige Unterstützung bekäme.",
+    "Die Verkehrsprobleme in der Innenstadt könnten durch neue Radwege verringert werden.",
+    "Es ist wichtig, dass man Kritik nicht persönlich nimmt.",
+    "Die Firma hat beschlossen, ihre Abteilung in eine andere Stadt zu verlegen.",
+    "Seit er im Ausland gelebt hat, sieht er viele Dinge mit anderen Augen.",
+    "Die Kündigungsfrist beträgt drei Monate zum Monatsende.",
+    "Man muss sich rechtzeitig um einen Termin beim Amt kümmern.",
+    "Ich bin mir nicht sicher, ob diese Entscheidung die richtige war.",
+    "Der Lebenslauf sollte kurz, übersichtlich und ohne Rechtschreibfehler sein.",
+    "Viele Kinder lernen heute schon früh, mit digitalen Medien umzugehen.",
+    "Die Einigung kam erst nach langen Verhandlungen zustande.",
+    "Wenn du Zeit hast, könntest du mir bei der Präsentation helfen."
+  ],
+  B2: [
+    "Die Bundesregierung sieht in der Digitalisierung eine Chance, die Verwaltung effizienter zu gestalten.",
+    "Ungeachtet der Proteste hat der Stadtrat das Vorhaben einstimmig beschlossen.",
+    "Die Ergebnisse sind nur dann aussagekräftig, wenn die Stichprobe repräsentativ ist.",
+    "Es wäre verfehlt, die Ursachen des Problems ausschließlich in der Wirtschaftspolitik zu suchen.",
+    "Der Zusammenhang zwischen Bildungsniveau und Einkommen ist in der Forschung gut belegt.",
+    "Sofern keine neuen Erkenntnisse vorliegen, bleibt die bisherige Regelung in Kraft.",
+    "Die Kritik des Verbands richtet sich vor allem gegen die mangelnde Transparenz des Verfahrens.",
+    "Hätte man frühzeitig auf die Warnungen reagiert, wären die Schäden vermutlich geringer ausgefallen.",
+    "Die Entscheidung hängt maßgeblich von den finanziellen Rahmenbedingungen ab.",
+    "Nicht jede Veränderung verbessert zwangsläufig die Lebensqualität der Betroffenen.",
+    "Gerade in Krisenzeiten zeigt sich die Belastbarkeit einer Gesellschaft.",
+    "Das Gutachten kommt zu dem Schluss, dass die Maßnahme nur begrenzt wirksam ist.",
+    "Die Verhandlungspartner zeigten sich zwar kompromissbereit, blieben in der Sache jedoch unnachgiebig.",
+    "Ich möchte dir einen Vorschlag unterbreiten, der die Interessen beider Seiten berücksichtigt.",
+    "Es stellt sich die Frage, inwieweit der Staat in private Entscheidungen eingreifen darf.",
+    "Die Auswirkungen des Klimawandels werden sich in den kommenden Jahrzehnten voraussichtlich verstärken.",
+    "Dem Antrag wurde stattgegeben, da die Voraussetzungen erfüllt waren.",
+    "Gleichwohl lässt sich nicht leugnen, dass die Reform erhebliche Lücken aufweist.",
+    "Die Gesprächsatmosphäre war angespannt, doch am Ende konnte man sich auf einen Kompromiss einigen.",
+    "Wer langfristig erfolgreich sein will, muss Eigenverantwortung und Teamgeist miteinander verbinden."
+  ]
+};
+
+// Finger-Zuordnung für die deutsche QWERTZ-Tastatur
+const FINGER = {};
+const fingerRows = {
+  "lp": "qay", "lr": "wsx", "lm": "edc", "li": "rfvtgb",
+  "rI": "zhnujm", "rm": "ik,", "rr": "ol.", "rp": "pöäüß-"
+};
+const FINGER_NAME = {
+  lp: "linker kleiner Finger", lr: "linker Ringfinger", lm: "linker Mittelfinger", li: "linker Zeigefinger",
+  rI: "rechter Zeigefinger", rm: "rechter Mittelfinger", rr: "rechter Ringfinger", rp: "rechter kleiner Finger"
+};
+for (const [f, keys] of Object.entries(fingerRows)) for (const k of keys) FINGER[k] = f;
+
+// Tastatur-Grafik
+const KB_ROWS = ["1234567890ß", "qwertzuiopü", "asdfghjklöä", "yxcvbnm,.-"];
+
+function makeKey(ch, label) {
+  const d = document.createElement("div");
+  d.className = "key";
+  d.textContent = label || ch;
+  d.dataset.key = ch;
+  const f = FINGER[ch];
+  if (f) d.classList.add(f.startsWith("l") ? "left" : "right", f);
+  if (ch === "shiftL") { d.classList.add("left", "shift"); }
+  if (ch === "shiftR") { d.classList.add("right", "shift"); }
+  if ("fj".includes(ch)) d.classList.add("home");
+  if (ch === " ") d.classList.add("space");
+  return d;
+}
+
+function buildKeyboard() {
+  const kb = document.getElementById("keyboard");
+  kb.innerHTML = "";
+  for (const row of KB_ROWS) {
+    const r = document.createElement("div");
+    r.className = "kbrow";
+    for (const k of row) r.appendChild(makeKey(k));
+    kb.appendChild(r);
+  }
+  const bottom = document.createElement("div");
+  bottom.className = "kbrow";
+  bottom.appendChild(makeKey("shiftL", "Umschalt"));
+  bottom.appendChild(makeKey(" ", "Leertaste"));
+  bottom.appendChild(makeKey("shiftR", "Umschalt"));
+  kb.appendChild(bottom);
+}
+
+function highlightKey(ch) {
+  document.querySelectorAll(".key.next").forEach(k => k.classList.remove("next"));
+  if (!ch) return;
+  const lower = ch.toLowerCase();
+  const keys = [lower];
+  if (ch !== lower) {
+    // Großbuchstabe: Umschalt-Taste auf der Gegenseite der Buchstabentaste
+    const leftHand = (FINGER[lower] || "").startsWith("l");
+    const pref = document.getElementById("shiftpref").value;
+    if (pref === "links") keys.push("shiftL");
+    else keys.push(leftHand ? "shiftR" : "shiftL");
+  }
+  for (const k of keys) {
+    const el = document.querySelector(`.key[data-key="${CSS.escape(k)}"]`);
+    if (el) el.classList.add("next");
+  }
+}
+
+const targetEl = document.getElementById("target");
+const inputEl = document.getElementById("input");
+const hintEl = document.getElementById("hint");
+const statsEl = document.getElementById("stats");
+let text = "";
+let startTime = null;
+
+function makeText(level, mode) {
+  if (mode === "saetze") {
+    const list = SENTENCES[level];
+    return list[Math.floor(Math.random() * list.length)];
+  }
+  const pool = WORDS[level];
+  const words = [];
+  for (let i = 0; i < 8; i++) words.push(pool[Math.floor(Math.random() * pool.length)]);
+  return words.join(" ");
+}
+
+function renderTarget(typed) {
+  targetEl.innerHTML = "";
+  for (let i = 0; i < text.length; i++) {
+    const span = document.createElement("span");
+    span.textContent = text[i];
+    if (i < typed.length) {
+      span.className = typed[i] === text[i] ? "ok" : "bad";
+    } else if (i === typed.length) {
+      span.className = "cur";
+    }
+    targetEl.appendChild(span);
+  }
+  highlightKey(text[typed.length]);
+}
+
+function startNew() {
+  const level = document.getElementById("level").value;
+  const mode = document.getElementById("mode").value;
+  text = makeText(level, mode);
+  inputEl.value = "";
+  inputEl.disabled = false;
+  inputEl.focus();
+  startTime = null;
+  statsEl.textContent = "";
+  hintEl.textContent = "";
+  renderTarget("");
+}
+
+inputEl.addEventListener("input", () => {
+  if (!startTime) startTime = Date.now();
+  const typed = inputEl.value;
+  renderTarget(typed);
+
+  const nextChar = text[typed.length];
+  if (nextChar) {
+    const f = FINGER[nextChar.toLowerCase()];
+    hintEl.textContent = f ? "Nächste Taste: " + nextChar + " (" + FINGER_NAME[f] + ")" : "";
+  }
+
+  if (typed.length >= text.length) {
+    const minutes = (Date.now() - startTime) / 60000;
+    let errors = 0;
+    for (let i = 0; i < text.length; i++) if (typed[i] !== text[i]) errors++;
+    const correct = text.length - errors;
+    const wpm = Math.round((correct / 5) / minutes);
+    const acc = Math.round((correct / text.length) * 100);
+    statsEl.textContent = `Fertig! ${wpm} Wörter pro Minute, Genauigkeit ${acc} %.`;
+    hintEl.textContent = "";
+    inputEl.disabled = true;
+    localStorage.setItem("lastResult", JSON.stringify({ wpm, acc, date: new Date().toISOString() }));
+  }
+});
+
+buildKeyboard();
+document.getElementById("start").addEventListener("click", startNew);
+document.getElementById("next").addEventListener("click", startNew);
+</script>
+</body>
+</html>
