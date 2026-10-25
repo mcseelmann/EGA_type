@@ -8,7 +8,7 @@ für die Niveaus A1 bis B2.
 
 Die Anwendung benötigt weder Installation noch Build-Schritt:
 
-1. `ega_type.html` in einem aktuellen Webbrowser öffnen.
+1. `index.html` in einem aktuellen Webbrowser öffnen.
 2. Niveau und Übungsart auswählen.
 3. Auf **Start** klicken und den angezeigten Text abtippen.
 
@@ -24,4 +24,4 @@ werden keine Server oder externen Bibliotheken benötigt.
 
 ## Projektdatei
 
-- `ega_type.html` – enthält Oberfläche, Styles und Trainingslogik.
+- `index.html` – enthält Oberfläche, Styles und Trainingslogik.
